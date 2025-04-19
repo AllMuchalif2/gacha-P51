@@ -22,19 +22,32 @@
     </style>
   </head>
   <body
-    class="bg-gray-100 min-h-screen flex flex-col items-center justify-start p-8"
+    class="bg-slate-400 min-h-screen flex flex-col items-center justify-start p-8"
   >
-    <div class="bg-white p-6 rounded-xl shadow-[5px_7px_0_rgb(15,23,42,1)] w-full max-w-4xl">
+    <div
+      class="bg-white p-6 rounded-xl shadow-[5px_7px_0_rgb(15,23,42,1)] w-full max-w-4xl"
+    >
       <h1 class="text-2xl font-bold mb-4 text-center">Gacha Kelompok</h1>
 
       <div class="flex flex-col items-center gap-3 mb-4 w-full">
         <!-- Input dan Switch -->
         <div class="flex flex-col items-center w-full gap-3">
-          <div class="flex w-full items-center justify-center font-bold text-black">
+          <div
+            class="flex w-full items-center justify-center font-bold text-black"
+          >
             <label for="modeSwitch" class="relative flex items-center">
-              <input id="modeSwitch" class="peer sr-only" type="checkbox" onchange="toggleMode()" />
-              <div class="h-5 w-10 rounded-full border-2 border-black bg-white shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all duration-500 ease-in-out peer-checked:bg-slate-400"></div>
-              <div class="absolute left-[4px] top-[5px] h-3.5 w-3.5 rounded-full border border-black bg-slate-400 transition-all duration-300 ease-in-out peer-checked:left-[1.4rem] peer-checked:bg-yellow-400"></div>
+              <input
+                id="modeSwitch"
+                class="peer sr-only"
+                type="checkbox"
+                onchange="toggleMode()"
+              />
+              <div
+                class="h-5 w-10 rounded-full border-2 border-black bg-white shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all duration-500 ease-in-out peer-checked:bg-slate-400"
+              ></div>
+              <div
+                class="absolute left-[4px] top-[5px] h-3.5 w-3.5 rounded-full border border-black bg-slate-400 transition-all duration-300 ease-in-out peer-checked:left-[1.4rem] peer-checked:bg-yellow-400"
+              ></div>
               <span id="modeLabel" class="ml-2">Mode: Jumlah Kelompok</span>
             </label>
           </div>
@@ -49,7 +62,7 @@
             />
           </div>
         </div>
-      
+
         <!-- Tombol-tombol dalam 1 baris -->
         <div class="flex flex-wrap justify-center gap-3 w-full">
           <div class="flex-1 min-w-[150px] max-w-[200px]">
@@ -62,18 +75,7 @@
               </button>
             </div>
           </div>
-      
-          <div class="flex-1 min-w-[150px] max-w-[200px]">
-            <div class="relative h-8 w-full rounded-md bg-slate-800">
-              <button
-                class="w-53 absolute -left-1 -top-1 flex h-full w-full items-center justify-center gap-3 rounded-md border border-slate-800 bg-slate-50 p-2 text-xs transition-all duration-200 hover:-left-0 hover:-top-0 hover:bg-slate-100 lg:cursor-pointer"
-                onclick="acakUlang()"
-              >
-                Acak Ulang
-              </button>
-            </div>
-          </div>
-      
+
           <div class="flex-1 min-w-[150px] max-w-[200px]">
             <div class="relative h-8 w-full rounded-md bg-slate-800">
               <button
@@ -84,7 +86,7 @@
               </button>
             </div>
           </div>
-      
+
           <div class="flex-1 min-w-[150px] max-w-[200px]">
             <div class="relative h-8 w-full rounded-md bg-slate-800">
               <button
@@ -142,6 +144,13 @@
         target="_blank"
         >vibe coding</a
       >
+      style by
+      <a
+        href="https://neubeam.vercel.app/"
+        class="text-blue-600 hover:underline"
+        target="_blank"
+        >neubeam</a
+      >
     </footer>
 
     <script>
@@ -195,7 +204,6 @@
       }
 
       function klikLuarModal(e) {
-        // Jika klik terjadi langsung di background (#modal), tutup modal
         if (e.target.id === "modal") {
           toggleModal();
         }
@@ -240,10 +248,6 @@
         tampilkanKelompok();
       }
 
-      function acakUlang() {
-        if (kelompokData.length > 0) buatKelompok();
-      }
-
       function tampilkanKelompok() {
         const wrap = document.getElementById("hasilKelompok");
         wrap.innerHTML = "";
@@ -251,7 +255,7 @@
         kelompokData.forEach((group, idx) => {
           const color = colors[idx % colors.length];
           const div = document.createElement("div");
-          div.className = `fade-in p-4 rounded-lg shadow ${color}`;
+          div.className = `fade-in p-4 rounded-lg shadow-[5px_7px_0_rgb(15,23,42,1)] ${color}`;
           div.innerHTML = `
         <h3 class="font-semibold text-lg mb-2">Kelompok ${idx + 1}</h3>
         <ul class="list-disc ml-5 space-y-1 min-h-[40px]" ondragover="event.preventDefault()" ondrop="onDrop(event, ${idx})" id="group-${idx}">
@@ -259,7 +263,7 @@
           .map(
             (s) => `
           <li draggable="true" ondragstart="onDragStart(event, '${s.nim}', ${idx})"
-            class="p-2 bg-gray-100 rounded-md border cursor-move" data-nim="${s.nim}">
+            class="p-2 bg-white rounded-md border cursor-move" data-nim="${s.nim}">
             ${s.nim} - ${s.nama}
           </li>
         `
