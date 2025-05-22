@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Mahasiswa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      .fade-in {
+        animation: fadeIn 0.4s ease forwards;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .copied-message {
+        animation: fadeOut 2s ease forwards;
+      }
+      @keyframes fadeOut {
+        0%,
+        70% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-slate-400 min-h-screen flex flex-col items-center p-4 md:p-8">
+    <div class="bg-white shadow-[5px_7px_0_rgb(15,23,42,1)] p-6 rounded-xl shadow-lg w-full max-w-2xl">
+      <div class="flex items-center justify-between gap-4 mb-6">
+        <div class="w-36">
+          <div class="relative h-8 w-full rounded-lg bg-slate-800">
+            <a href="/">
+              <button
+                class="w-53 absolute -left-1 -top-1 flex h-full w-full items-center justify-center gap-3 rounded-lg border border-slate-800 bg-slate-50 p-2 text-xs transition-all duration-200 hover:-left-0 hover:-top-0 hover:bg-slate-100 lg:cursor-pointer"
+              >
+                <i class="fa-solid fa-left-long"></i> back
+              </button>
+            </a>
+          </div>
+        </div>
+
+        <h1 class="text-2xl font-bold text-center flex-1">
+          Daftar Mahasiswa P51
+        </h1>
+
+        <div class="relative w-36">
+          <div class="relative h-8 w-full rounded-lg bg-slate-800">
+            <button
+              id="copyButton"
+              onclick="copyNames()"
+              class="w-53 absolute -left-1 -top-1 flex h-full w-full items-center justify-center gap-2 rounded-lg border border-slate-800 bg-slate-50 p-2 text-xs transition-all duration-200 hover:-left-0 hover:-top-0 hover:bg-slate-100 lg:cursor-pointer"
+            >
+              <i class="fa-solid fa-copy"></i> Copy Semua
+            </button>
+          </div>
+          <div
+            id="copiedMessage"
+            class="absolute right-0 -bottom-6 text-sm text-green-600 copied-message hidden"
+          >
+            Tersalin!
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center mb-4">
+        <div id="studentCount" class="text-sm text-gray-600"></div>
+      </div>
+
+      <div class="border rounded-lg overflow-hidden">
+        <table class="w-full border-collapse">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="border px-4 py-2 w-12">No</th>
+              <th class="border px-4 py-2 text-left">Nama Mahasiswa</th>
+            </tr>
+          </thead>
+          <tbody id="studentList" class="bg-white"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      let mahasiswa = [
+        { nama: "HIDAYATUL SALSABILA" },
+        { nama: "KHALDA NAILA NABILA" },
+        { nama: "RONA AGHNIYA ANGELICA" },
+        { nama: "ILHAM RIFANDI" },
+        { nama: "RACHMA AGHNAITA" },
+        { nama: "DELIYAN RAHADYA FIRZA" },
+        { nama: "WIDHI BAGASKARA" },
+        { nama: "MAISYAHRA ANGGUN FIRMANSYAH" },
+        { nama: "AKHMAD MUTTAKIN" },
+        { nama: "MUHAMMAD ALFIN ZULFAN RABBANI" },
+        { nama: "AL - MUCHALIF ARNAMA" },
+        { nama: "DYAH AYU ETIKAWATI" },
+        { nama: "ALIEF MAULANA" },
+        { nama: "MUCH. FALAH RAMADHANI" },
+        { nama: "RINI AISYAH SALSABILA" },
+        { nama: "NUR ASIAH" },
+        { nama: "MUHAMAD RIZAL ALFIANSYAH" },
+        { nama: "DIAN RIZQI MAULIDA" },
+        { nama: "NISMAH JAMAL THALIB" },
+        { nama: "PUTRI NAOMI GAJAH MANIK" },
+        { nama: "SHERIN SUNGKAR" },
+        { nama: "ASIH ARMAWATI" },
+        { nama: "ANGELICA LIDYA SOESANTO" },
+        { nama: "NAILUS SA'ADAH" },
+        { nama: "NASYWA APRILIA WINDA AZZHARA" },
+        { nama: "MUHAMMAD SAYLU FAYADH" },
+        { nama: "ACHMAD BAIHAQI" },
+        { nama: "M. RAIHAN NAZHAFA" },
+        { nama: "PRADIKA SATIA PUTRA" },
+        { nama: "AQILLA FARREL RANDHIKA" },
+        { nama: "DEWI TRI UTAMI" },
+        { nama: "MUKHAMMAD RIZQI NUGROHO" },
+        { nama: "VALENTINO KEA WEJAK" },
+        { nama: "NAMIRA DIAN HUSNA" },
+        { nama: "ZUHROTUSY SYIFA" },
+        { nama: "RONAM PANSONGGA ADHIE PAWIRO" },
+        { nama: "MUHAMMAD ZIDAN MUBAROK" },
+        { nama: "ROSALIA SINKA" },
+        { nama: "ANNISA INTAN RAHMASARI" },
+        { nama: "TEGAR PRASETYO" },
+        { nama: "NUR RIFQI TRI AJI SAPUTRA" },
+        { nama: "MUHAMMAD FARIS KHABIBI" },
+        { nama: "ANNISA NURAINI" },
+        { nama: "CHAIRUL IMAN" },
+      ];
+
+      document.addEventListener("DOMContentLoaded", function () {
+        displayStudents();
+        updateStudentCount();
+      });
+
+      function displayStudents() {
+        const studentList = document.getElementById("studentList");
+        studentList.innerHTML = mahasiswa
+          .map(
+            (student, index) => `
+              <tr class="fade-in">
+                <td class="border px-4 py-2 text-center">${index + 1}</td>
+                <td class="border px-4 py-2">${student.nama}</td>
+              </tr>
+            `
+          )
+          .join("");
+      }
+
+      function updateStudentCount() {
+        document.getElementById(
+          "studentCount"
+        ).textContent = `Total: ${mahasiswa.length} mahasiswa`;
+      }
+
+      function getAllNames() {
+        return mahasiswa.map((s) => s.nama).join(", ");
+      }
+
+      function copyNames() {
+        const names = getAllNames();
+        navigator.clipboard.writeText(names).then(() => {
+          showCopiedMessage();
+        });
+      }
+
+      function showCopiedMessage() {
+        const message = document.getElementById("copiedMessage");
+        message.classList.remove("hidden");
+        message.classList.add("copied-message");
+
+        message.style.animation = "none";
+        void message.offsetWidth;
+        message.style.animation = null;
+
+        setTimeout(() => {
+          message.classList.add("hidden");
+        }, 2000);
+      }
+    </script>
+  </body>
+</html>

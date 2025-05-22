@@ -8,6 +8,7 @@
     <style>
       .fade-in {
         animation: fadeIn 0.4s ease forwards;
+        opacity: 0;
       }
       @keyframes fadeIn {
         from {
@@ -19,80 +20,55 @@
           transform: translateY(0);
         }
       }
+      .dragging {
+        opacity: 0.5;
+        background-color: #e2e8f0;
+      }
+      .modal-backdrop {
+        backdrop-filter: blur(4px);
+      }
     </style>
   </head>
-  <body
-    class="bg-slate-400 min-h-screen flex flex-col items-center justify-start p-8"
-  >
-    <div
-      class="bg-white p-6 rounded-xl shadow-[5px_7px_0_rgb(15,23,42,1)] w-full max-w-4xl"
-    >
+  <body class="bg-slate-400 min-h-screen flex flex-col items-center justify-start p-4 md:p-8">
+    <div class="bg-white p-6 rounded-xl shadow-[5px_7px_0_rgb(15,23,42,1)] w-full max-w-4xl">
       <h1 class="text-2xl font-bold mb-4 text-center">Gacha Kelompok</h1>
 
       <div class="flex flex-col items-center gap-3 mb-4 w-full">
-        <!-- Input dan Switch -->
         <div class="flex flex-col items-center w-full gap-3">
-          <div
-            class="flex w-full items-center justify-center font-bold text-black"
-          >
-            <label for="modeSwitch" class="relative flex items-center">
-              <input
-                id="modeSwitch"
-                class="peer sr-only"
-                type="checkbox"
-                onchange="toggleMode()"
-              />
-              <div
-                class="h-5 w-10 rounded-full border-2 border-black bg-white shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all duration-500 ease-in-out peer-checked:bg-slate-400"
-              ></div>
-              <div
-                class="absolute left-[4px] top-[5px] h-3.5 w-3.5 rounded-full border border-black bg-slate-400 transition-all duration-300 ease-in-out peer-checked:left-[1.4rem] peer-checked:bg-yellow-400"
-              ></div>
+          <div class="flex w-full items-center justify-center font-bold text-black">
+            <label for="modeSwitch" class="relative flex items-center cursor-pointer">
+              <input id="modeSwitch" class="peer sr-only" type="checkbox" onchange="toggleMode()" />
+              <div class="h-5 w-10 rounded-full border-2 border-black bg-white shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all duration-500 ease-in-out peer-checked:bg-slate-400"></div>
+              <div class="absolute left-[4px] top-[5px] h-3.5 w-3.5 rounded-full border border-black bg-slate-400 transition-all duration-300 ease-in-out peer-checked:left-[1.4rem] peer-checked:bg-yellow-400"></div>
               <span id="modeLabel" class="ml-2">Mode: Jumlah Kelompok</span>
             </label>
           </div>
 
           <div class="relative h-10 w-full rounded-lg bg-slate-800">
-            <input
-              id="jumlahInput"
-              type="number"
-              placeholder="Jumlah Kelompok"
-              class="absolute -left-[3px] -top-[3px] h-10 w-full rounded-lg border-2 border-slate-900 bg-white px-3 font-semibold outline outline-0 transition-all duration-200 placeholder:font-medium focus:left-0 focus:top-0 focus:outline-0"
-              min="1"
-            />
+            <input id="jumlahInput" type="number" placeholder="Jumlah Kelompok" class="absolute -left-[3px] -top-[3px] h-10 w-full rounded-lg border-2 border-slate-900 bg-white px-3 font-semibold outline outline-0 transition-all duration-200 placeholder:font-medium focus:left-0 focus:top-0 focus:outline-0" min="1" value="4" />
           </div>
         </div>
 
-        <!-- Tombol-tombol dalam 1 baris -->
         <div class="flex flex-wrap justify-center gap-3 w-full">
-          <div class="flex-1 min-w-[150px] max-w-[200px]">
-            <div class="relative h-8 w-full rounded-md bg-slate-800">
-              <button
-                class="w-53 absolute -left-1 -top-1 flex h-full w-full items-center justify-center gap-3 rounded-md border border-slate-800 bg-slate-50 p-2 text-xs transition-all duration-200 hover:-left-0 hover:-top-0 hover:bg-slate-100 lg:cursor-pointer"
-                onclick="buatKelompok()"
-              >
-                Buat
+          <div class="w-36">
+            <div class="relative h-8 w-full rounded-lg bg-slate-800">
+              <button class="w-53 absolute -left-1 -top-1 flex h-full w-full items-center justify-center gap-3 rounded-lg border border-slate-800 bg-slate-50 p-2 text-xs transition-all duration-200 hover:-left-0 hover:-top-0 hover:bg-slate-100 lg:cursor-pointer" onclick="buatKelompok()">
+                Buat Kelompok
               </button>
             </div>
           </div>
 
-          <div class="flex-1 min-w-[150px] max-w-[200px]">
-            <div class="relative h-8 w-full rounded-md bg-slate-800">
-              <button
-                class="w-53 absolute -left-1 -top-1 flex h-full w-full items-center justify-center gap-3 rounded-md border border-slate-800 bg-slate-50 p-2 text-xs transition-all duration-200 hover:-left-0 hover:-top-0 hover:bg-slate-100 lg:cursor-pointer"
-                onclick="exportPDF()"
-              >
+          <div class="w-36">
+            <div class="relative h-8 w-full rounded-lg bg-slate-800">
+              <button class="w-53 absolute -left-1 -top-1 flex h-full w-full items-center justify-center gap-3 rounded-lg border border-slate-800 bg-slate-50 p-2 text-xs transition-all duration-200 hover:-left-0 hover:-top-0 hover:bg-slate-100 lg:cursor-pointer" onclick="exportPDF()" id="exportBtn" disabled>
                 Export PDF
               </button>
             </div>
           </div>
 
-          <div class="flex-1 min-w-[150px] max-w-[200px]">
-            <div class="relative h-8 w-full rounded-md bg-slate-800">
-              <button
-                class="w-53 absolute -left-1 -top-1 flex h-full w-full items-center justify-center gap-3 rounded-md border border-slate-800 bg-slate-50 p-2 text-xs transition-all duration-200 hover:-left-0 hover:-top-0 hover:bg-slate-100 lg:cursor-pointer"
-                onclick="toggleModal()"
-              >
+          <div class="w-36">
+            <div class="relative h-8 w-full rounded-lg bg-slate-800">
+              <button class="w-53 absolute -left-1 -top-1 flex h-full w-full items-center justify-center gap-3 rounded-lg border border-slate-800 bg-slate-50 p-2 text-xs transition-all duration-200 hover:-left-0 hover:-top-0 hover:bg-slate-100 lg:cursor-pointer" onclick="toggleModalInput()">
                 Daftar Mahasiswa
               </button>
             </div>
@@ -100,63 +76,68 @@
         </div>
       </div>
 
-      <div
-        id="hasilKelompok"
-        class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4"
-      ></div>
+      <div id="studentCount" class="text-sm text-gray-600 mb-2 text-center"></div>
+      <div id="hasilKelompok" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4"></div>
     </div>
 
-    <!-- Modal Daftar Mahasiswa -->
-    <div
-      id="modal"
-      class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50"
-      onclick="klikLuarModal(event)"
-    >
-      <div
-        class="bg-white shadow-xl p-6 w-full max-w-lg relative overflow-auto max-h-[80vh] shadow-[5px_7px_0_rgb(15,23,42,1)] rounded-md"
-      >
+    <div id="modalInput" class="fixed inset-0 bg-black bg-opacity-50 modal-backdrop hidden flex items-center justify-center z-50" onclick="klikLuarModalInput(event)">
+      <div class="bg-white shadow-2xl p-6 w-full max-w-lg relative overflow-auto max-h-[80vh] shadow-[8px_12px_25px_rgba(0,0,0,0.4)] rounded-lg border border-gray-200">
         <h2 class="text-xl font-bold mb-4">Daftar Mahasiswa</h2>
-        <table class="w-full table-auto border-collapse">
-          <thead>
-            <tr class="bg-gray-200">
-              <th class="border px-4 py-2 text-left">#</th>
-              <th class="border px-4 py-2 text-left">NIM</th>
-              <th class="border px-4 py-2 text-left">Nama</th>
-            </tr>
-          </thead>
-          <tbody id="daftarMahasiswa"></tbody>
-        </table>
-        <button
-          onclick="toggleModal()"
-          class="absolute top-2 right-2 text-red-600 hover:text-red-800 text-xl"
-        >
+        <div class="mb-4">
+          <p class="text-sm text-gray-600 mb-2">Masukkan nama mahasiswa, dipisahkan dengan koma:</p>
+          <div class="relative h-10 w-full rounded-lg bg-slate-800 mb-2">
+            <input id="namaInputModal" type="text" placeholder="Contoh: Andi, Budi, Citra, Dini" class="absolute -left-[3px] -top-[3px] h-10 w-full rounded-lg border-2 border-slate-900 bg-white px-3 font-semibold outline outline-0 transition-all duration-200 placeholder:font-medium focus:left-0 focus:top-0 focus:outline-0" />
+          </div>
+          <div class="flex gap-3 justify-center">
+            <div class="w-36">
+              <div class="relative h-8 w-full rounded-lg bg-slate-800">
+                <button class="w-53 absolute -left-1 -top-1 flex h-full w-full items-center justify-center gap-3 rounded-lg border border-slate-800 bg-slate-50 p-2 text-xs transition-all duration-200 hover:-left-0 hover:-top-0 hover:bg-slate-100 lg:cursor-pointer" onclick="simpanNamaMahasiswa()" id="simpanButton">
+                  Tambah
+                </button>
+              </div>
+            </div>
+            <div class="w-36">
+              <div class="relative h-8 w-full rounded-lg bg-slate-800">
+                <button class="w-53 absolute -left-1 -top-1 flex h-full w-full items-center justify-center gap-3 rounded-lg border border-slate-800 bg-slate-50 p-2 text-xs transition-all duration-200 hover:-left-0 hover:-top-0 hover:bg-slate-100 lg:cursor-pointer" onclick="resetData()">
+                  Reset Semua
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="border rounded-lg overflow-hidden shadow-md">
+          <table class="w-full border-collapse">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="border px-4 py-2">No</th>
+                <th class="border px-4 py-2">Nama Mahasiswa</th>
+                <th class="border px-4 py-2">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="daftarMahasiswa"></tbody>
+          </table>
+        </div>
+
+        <button onclick="toggleModalInput()" class="absolute top-2 right-2 text-red-600 hover:text-red-800 text-xl font-bold hover:bg-red-100 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
           &times;
         </button>
       </div>
     </div>
 
-    <!-- Footer -->
     <footer class="text-center text-sm text-gray-500 py-4">
       Made with
-      <a
-        href="https://en.wikipedia.org/wiki/Vibe_coding"
-        class="text-blue-600 hover:underline"
-        target="_blank"
-        >vibe coding</a
-      >
+      <a href="https://en.wikipedia.org/wiki/Vibe_coding" class="text-blue-600 hover:underline" target="_blank">vibe coding</a>
       style by
-      <a
-        href="https://neubeam.vercel.app/"
-        class="text-blue-600 hover:underline"
-        target="_blank"
-        >neubeam</a
-      >
+      <a href="https://neubeam.vercel.app/" class="text-blue-600 hover:underline" target="_blank">neubeam</a>
     </footer>
 
     <script>
       let mahasiswa = [];
       let kelompokData = [];
       let modeJumlah = true;
+      let isEditing = false;
+      let editingIndex = -1;
 
       const colors = [
         "bg-red-100",
@@ -168,14 +149,12 @@
         "bg-indigo-100",
       ];
 
-      async function loadMahasiswa() {
-        try {
-          const res = await fetch("mahasiswa.json");
-          mahasiswa = await res.json();
-          isiTabelMahasiswa();
-        } catch (err) {
-          alert("Gagal memuat data mahasiswa.");
-        }
+      function updateStudentCount() {
+        const countElement = document.getElementById("studentCount");
+        countElement.textContent = `Total Mahasiswa: ${mahasiswa.length}`;
+
+        const exportBtn = document.getElementById("exportBtn");
+        exportBtn.disabled = kelompokData.length === 0;
       }
 
       function isiTabelMahasiswa() {
@@ -183,29 +162,31 @@
         daftar.innerHTML = mahasiswa
           .map(
             (s, i) => `
-        <tr>
-          <td class="border px-4 py-2">${i + 1}</td>
-          <td class="border px-4 py-2">${s.nim}</td>
-          <td class="border px-4 py-2">${s.nama}</td>
-        </tr>
-      `
+            <tr>
+              <td class="border px-4 py-2">${i + 1}</td>
+              <td class="border px-4 py-2">${s.nama}</td>
+              <td class="border px-4 py-2 flex gap-2 justify-center">
+                <button onclick="editNamaMahasiswa(${i})" class="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded text-xs">Edit</button>
+                <button onclick="hapusNamaMahasiswa(${i})" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs">Hapus</button>
+              </td>
+            </tr>
+          `
           )
           .join("");
+
+        updateStudentCount();
       }
 
-      function toggleModal() {
-        document.getElementById("modal").classList.toggle("hidden");
-      }
-
-      function klikLuarModal(e) {
-        if (e.target.id === "modal") {
-          toggleModal();
+      function toggleModalInput() {
+        document.getElementById("modalInput").classList.toggle("hidden");
+        if (!document.getElementById("modalInput").classList.contains("hidden")) {
+          document.getElementById("namaInputModal").focus();
         }
       }
 
-      function klikLuarModal(e) {
-        if (e.target.id === "modal") {
-          toggleModal();
+      function klikLuarModalInput(e) {
+        if (e.target.id === "modalInput") {
+          toggleModalInput();
         }
       }
 
@@ -225,99 +206,225 @@
           input.placeholder = "Jumlah Kelompok";
         } else {
           label.textContent = "Mode: Jumlah Anggota";
-          input.placeholder = "Jumlah Anggota";
+          input.placeholder = "Jumlah Anggota per Kelompok";
+        }
+      }
+
+      function simpanNamaMahasiswa() {
+        const input = document.getElementById("namaInputModal").value.trim();
+        if (!input) {
+          alert("Silakan masukkan nama mahasiswa");
+          return;
+        }
+
+        const names = input
+          .split(",")
+          .map((name) => name.trim())
+          .filter((name) => name);
+
+        if (names.length === 0) {
+          alert("Silakan masukkan nama mahasiswa yang valid");
+          return;
+        }
+
+        if (isEditing) {
+          mahasiswa[editingIndex].nama = names[0];
+          isEditing = false;
+          editingIndex = -1;
+          document.getElementById("simpanButton").textContent = "Tambah";
+        } else {
+          names.forEach((name) => {
+            mahasiswa.push({ nama: name });
+          });
+        }
+
+        document.getElementById("namaInputModal").value = "";
+        isiTabelMahasiswa();
+      }
+
+      function editNamaMahasiswa(index) {
+        const mahasiswaToEdit = mahasiswa[index];
+        document.getElementById("namaInputModal").value = mahasiswaToEdit.nama;
+        editingIndex = index;
+        isEditing = true;
+        document.getElementById("simpanButton").textContent = "Update";
+        document.getElementById("namaInputModal").focus();
+      }
+
+      function hapusNamaMahasiswa(index) {
+        if (confirm("Apakah Anda yakin ingin menghapus mahasiswa ini?")) {
+          mahasiswa.splice(index, 1);
+          isiTabelMahasiswa();
+
+          if (isEditing && editingIndex === index) {
+            isEditing = false;
+            editingIndex = -1;
+            document.getElementById("simpanButton").textContent = "Tambah";
+            document.getElementById("namaInputModal").value = "";
+          }
+        }
+      }
+
+      function resetData() {
+        if (mahasiswa.length === 0 || confirm("Apakah Anda yakin ingin menghapus semua data mahasiswa?")) {
+          mahasiswa = [];
+          kelompokData = [];
+          isiTabelMahasiswa();
+          document.getElementById("namaInputModal").value = "";
+          document.getElementById("hasilKelompok").innerHTML = "";
+          isEditing = false;
+          editingIndex = -1;
+          document.getElementById("simpanButton").textContent = "Tambah";
+          updateStudentCount();
         }
       }
 
       function buatKelompok() {
-        const val = parseInt(document.getElementById("jumlahInput").value);
-        if (!val || val < 1) return alert("Input tidak valid.");
+        if (mahasiswa.length === 0) {
+          alert("Tidak ada mahasiswa. Silakan tambahkan mahasiswa terlebih dahulu.");
+          toggleModalInput();
+          return;
+        }
 
-        const acak = acakArray([...mahasiswa]); // Ubah dari siswa ke mahasiswa
-        let jumlahKelompok = 0;
+        const val = parseInt(document.getElementById("jumlahInput").value);
+        if (!val || val < 1) {
+          alert("Jumlah harus lebih dari 0");
+          return;
+        }
+
+        const shuffledStudents = acakArray([...mahasiswa]);
+        let jumlahKelompok;
+        let anggotaPerKelompok;
 
         if (modeJumlah) {
-          jumlahKelompok = val;
+          jumlahKelompok = Math.min(val, mahasiswa.length);
+          anggotaPerKelompok = Math.ceil(mahasiswa.length / jumlahKelompok);
         } else {
-          jumlahKelompok = Math.ceil(mahasiswa.length / val); // Ubah dari siswa ke mahasiswa
+          anggotaPerKelompok = Math.min(val, mahasiswa.length);
+          jumlahKelompok = Math.ceil(mahasiswa.length / anggotaPerKelompok);
         }
 
         kelompokData = Array.from({ length: jumlahKelompok }, () => []);
-        acak.forEach((s, i) => kelompokData[i % jumlahKelompok].push(s));
+
+        shuffledStudents.forEach((student, index) => {
+          const groupIndex = index % jumlahKelompok;
+          kelompokData[groupIndex].push(student);
+        });
 
         tampilkanKelompok();
+        updateStudentCount();
       }
 
       function tampilkanKelompok() {
         const wrap = document.getElementById("hasilKelompok");
         wrap.innerHTML = "";
 
-        kelompokData.forEach((group, idx) => {
-          const color = colors[idx % colors.length];
-          const div = document.createElement("div");
-          div.className = `fade-in p-4 rounded-lg shadow-[5px_7px_0_rgb(15,23,42,1)] ${color}`;
-          div.innerHTML = `
-        <h3 class="font-semibold text-lg mb-2">Kelompok ${idx + 1}</h3>
-        <ul class="list-disc ml-5 space-y-1 min-h-[40px]" ondragover="event.preventDefault()" ondrop="onDrop(event, ${idx})" id="group-${idx}">
-        ${group
-          .map(
-            (s) => `
-          <li draggable="true" ondragstart="onDragStart(event, '${s.nim}', ${idx})"
-            class="p-2 bg-white rounded-md border cursor-move" data-nim="${s.nim}">
-            ${s.nim} - ${s.nama}
-          </li>
-        `
-          )
-          .join("")}
-        </ul>
-      `;
-          wrap.appendChild(div);
-        });
-      }
-
-      let dragData = {};
-
-      function onDragStart(e, nim, fromIdx) {
-        dragData = { nim, fromIdx };
-      }
-
-      function onDrop(e, toIdx) {
-        const { nim, fromIdx } = dragData;
-        if (fromIdx === undefined || toIdx === undefined || fromIdx === toIdx)
+        if (kelompokData.length === 0) {
+          wrap.innerHTML = '<p class="text-center col-span-3 text-gray-500">Belum ada kelompok yang dibuat</p>';
           return;
+        }
 
-        const itemIndex = kelompokData[fromIdx].findIndex((s) => s.nim === nim);
-        if (itemIndex === -1) return;
+        kelompokData.forEach((group, idx) => {
+          setTimeout(() => {
+            const color = colors[idx % colors.length];
+            const div = document.createElement("div");
+            div.className = `fade-in p-4 rounded-lg shadow-[5px_7px_0_rgb(15,23,42,1)] ${color}`;
+            div.innerHTML = `
+              <h3 class="font-semibold text-lg mb-2">Kelompok ${idx + 1} <span class="text-sm font-normal">(${group.length} orang)</span></h3>
+              <ul class="space-y-2 min-h-[40px]" 
+                  id="group-${idx}" 
+                  ondragover="event.preventDefault(); event.currentTarget.classList.add('bg-gray-200')" 
+                  ondragleave="event.currentTarget.classList.remove('bg-gray-200')"
+                  ondrop="onDrop(event, ${idx})">
+                ${group
+                  .map(
+                    (s, studentIdx) => `
+                  <li draggable="true" 
+                      ondragstart="onDragStart(event, ${studentIdx}, ${idx})"
+                      ondragend="event.currentTarget.classList.remove('dragging')"
+                      class="p-2 bg-white rounded-md border cursor-move hover:shadow-md transition-all">
+                    ${s.nama}
+                  </li>
+                `
+                  )
+                  .join("")}
+              </ul>
+            `;
+            wrap.appendChild(div);
+          }, idx * 1000);
+        });
 
-        const [moved] = kelompokData[fromIdx].splice(itemIndex, 1);
-        kelompokData[toIdx].push(moved);
+        setTimeout(() => {
+          document.getElementById("exportBtn").disabled = false;
+        }, kelompokData.length * 1000);
+      }
+
+      function onDragStart(e, studentIdx, groupIdx) {
+        e.dataTransfer.setData("text/plain", JSON.stringify({ studentIdx, groupIdx }));
+        e.currentTarget.classList.add("dragging");
+      }
+
+      function onDrop(e, toGroupIdx) {
+        e.preventDefault();
+        e.currentTarget.classList.remove("bg-gray-200");
+
+        const dragData = JSON.parse(e.dataTransfer.getData("text/plain"));
+        const { studentIdx, groupIdx: fromGroupIdx } = dragData;
+
+        if (fromGroupIdx === toGroupIdx) return;
+
+        const [movedStudent] = kelompokData[fromGroupIdx].splice(studentIdx, 1);
+        kelompokData[toGroupIdx].push(movedStudent);
+
         tampilkanKelompok();
       }
 
-      async function exportPDF() {
+      function exportPDF() {
+        if (kelompokData.length === 0) {
+          alert("Belum ada kelompok yang dibuat");
+          return;
+        }
+
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
 
+        doc.setFontSize(16);
+        doc.text("Daftar Kelompok", 10, 10);
+        doc.setFontSize(12);
+        doc.text(`Total Mahasiswa: ${mahasiswa.length}`, 10, 18);
+        doc.text(`Jumlah Kelompok: ${kelompokData.length}`, 10, 26);
+
+        let yPos = 40;
+
         kelompokData.forEach((group, idx) => {
           doc.setFontSize(14);
-          doc.text(
-            `Kelompok ${idx + 1}`,
-            10,
-            doc.autoTable.previous.finalY + 10 || 10
-          );
-          const rows = group.map((s) => [s.nim, s.nama]);
-          doc.autoTable({
-            head: [["NIM", "Nama"]],
-            body: rows,
-            startY: doc.autoTable.previous?.finalY + 15 || 20,
+          doc.text(`Kelompok ${idx + 1} (${group.length} orang)`, 10, yPos);
+          yPos += 10;
+
+          doc.setFontSize(12);
+          group.forEach((student, studentIdx) => {
+            doc.text(`${studentIdx + 1}. ${student.nama}`, 15, yPos);
+            yPos += 7;
+
+            if (yPos > 280) {
+              doc.addPage();
+              yPos = 20;
+            }
           });
+
+          yPos += 10;
         });
 
-        doc.save("kelompok.pdf");
+        doc.save(`kelompok_${new Date().toISOString().slice(0, 10)}.pdf`);
       }
 
-      // Load data saat halaman siap
-      window.onload = loadMahasiswa;
+      window.onload = function () {
+        isiTabelMahasiswa();
+
+        document.addEventListener("touchmove", function (e) {
+          e.preventDefault();
+        }, { passive: false });
+      };
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
