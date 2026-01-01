@@ -10,7 +10,7 @@ This project was created with the help of some amazing AI-powered coding assista
 - [GitHub Copilot](https://github.com/features/copilot)
 - [AntiGravity](https://antigravity.google/)
 
-You can check out the live project here: [Gacha-P51 Demo](https://allmuchalif2.github.io/gachakel)
+You can check out the live project here: [GachaKel Demo](https://allmuchalif2.github.io/gachakel)
 
 style by [NeuBeam](https://neubeam.vercel.app/)
 ---
